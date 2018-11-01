@@ -30,4 +30,4 @@ workflows:
     jobs:
       - newman/collection-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
-          options: "--environment=./newman-orb.postman_environment.json"
+          # options: "--environment=./newman-orb.postman_environment.json"

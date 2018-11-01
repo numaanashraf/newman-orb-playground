@@ -1,28 +1,33 @@
 version: 2.1
+
 orbs:
   newman:
+    description: |
+      Newman is a collection runner for Postman.
+      It allows you to effortlessly run and test a Postman collection.
+      It is built with extensibility in mind to easily integrate it with continuous integration servers and build systems.
     executors:
       newman-docker:
         docker:
           - image: postman/newman_alpine33:4.1.0
     jobs:
-      collection-run-with-environment:
+      collection-run:
         executor: newman-docker
         parameters:
           collection:
             description: "Collection file path or URL"
             type: string
-          environment:
-            description: "Environment file path or URL"
+          options:
+            description: "Additional options for newman like --environment, -n, --timeout, etc"
             type: string
+            default: ""
         steps:
           - checkout
-          - run: "newman run <<parameters.collection>> --environment=<<parameters.environment>>"
+          - run: "newman run <<parameters.collection>> <<parameters.options>>"
 
 workflows:
   newman-test:
     jobs:
-      - newman/collection-run-with-environment:
-          name: '1'
+      - newman/collection-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
-          environment: ./newman-orb.postman_environment.json
+          options: "--environment=./newman-orb.postman_environment.json"

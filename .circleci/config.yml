@@ -4,24 +4,19 @@ orbs:
     executors:
       newman_docker:
         docker:
-          - image: postman/newman_alpine33:4.1.0        
+          - image: postman/newman_alpine33:4.1.0
     jobs:
-      collection_run:
+      collection_run_from_url:
         executor: newman_docker
         parameters:
           url:
             type: string
         steps:
-          - run: "newman run --url=<<parameters.url>>"
-      print_version:
-        executor: newman_docker
-        steps:
-          - run: "newman --version"
+          - run: "newman run <<parameters.url>>"
 
 workflows:
   newman-test:
     jobs:
-      - newman/print_version
-      - newman/collection_run:
+      - newman/collection_run_from_url:
           name: "sample collection run"
           url: https://www.getpostman.com/collections/1d24d0cd53882ad791f3

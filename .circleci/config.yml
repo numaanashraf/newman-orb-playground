@@ -18,7 +18,7 @@ orbs:
             description: "Collection file path or URL"
             type: string
           options:
-            description: "Additional options for newman like --environment, -n, --timeout, etc"
+            description: "Options for newman run like --environment, -n, --timeout, etc"
             type: string
             default: ""
         steps:
@@ -30,4 +30,6 @@ workflows:
     jobs:
       - newman/collection-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
-          # options: "--environment=./newman-orb.postman_environment.json"
+          options: >
+            --environment=./newman-orb.postman_environment.json
+            -n 2

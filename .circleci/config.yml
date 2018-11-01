@@ -2,21 +2,27 @@ version: 2.1
 orbs:
   newman:
     executors:
-      newman_docker:
+      newman-docker:
         docker:
           - image: postman/newman_alpine33:4.1.0
     jobs:
-      collection_run_from_url:
-        executor: newman_docker
+      collection-run-with-environment:
+        executor: newman-docker
         parameters:
-          url:
+          collection:
+            description: "Collection file path or URL"
+            type: string
+          environment:
+            description: "Environment file path or URL"
             type: string
         steps:
-          - run: "newman run <<parameters.url>>"
+          - checkout
+          - run: "newman run <<parameters.collection>> --environment=<<parameters.environment>>"
 
 workflows:
   newman-test:
     jobs:
-      - newman/collection_run_from_url:
-          name: "sample collection run"
-          url: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
+      - newman/collection-run-with-environment:
+          name: '1'
+          collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
+          environment: ./newman-orb.postman_environment.json

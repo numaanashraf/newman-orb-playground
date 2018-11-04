@@ -4,18 +4,23 @@ orbs:
   # newman: postman/newman@dev:0.0.2
   newman:
     description: |
-      Newman is a collection runner for Postman. It allows you to effortlessly run and test a Postman collection.
+      Newman is a collection runner for Postman.
+      It allows you to effortlessly run and test a Postman collection.
 
     executors:
-      docker-newman-alpine:
+      postman-newman-docker:
+        parameters:
+          tag:
+            description:
+              Tag for postman/newman docker image
+              Reference - https://hub.docker.com/r/postman/newman/tags
+            type: string
+            default: 4.2.1
         docker:
-          - image: postman/newman:4.2.1-alpine
-      docker-newman-ubuntu:
-        docker:
-          - image: postman/newman:4.2.1-ubuntu
+          - image: postman/newman:<<parameters.tag>>
 
     commands:
-      collection-run:
+      newman-run:
         description:
           Run a Postman Collection
           Reference - https://github.com/postmanlabs/newman#newman-run-collection-file-source-options
@@ -57,16 +62,16 @@ orbs:
             default: ""
           timeout:
             description: Time (in milliseconds) to wait for the entire collection run to complete execution
-            type: string
-            default: ""
+            type: integer
+            default: 0
           timeout-request:
             description: Time (in milliseconds) to wait for requests to return a response
-            type: string
-            default: ""
+            type: integer
+            default: 0
           timeout-script:
             description: Time (in milliseconds) to wait for scripts to complete execution
-            type: string
-            default: ""
+            type: integer
+            default: 0
           insecure:
             description: Disables SSL verification checks and allows self-signed SSL certificates
             type: boolean
@@ -109,22 +114,30 @@ orbs:
 
 jobs:
   newman-collection-run:
-    executor: newman/docker-newman-alpine
+    executor: newman/postman-newman-docker
     steps:
-      - newman/collection-run:
+      - newman/newman-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
   newman-collection-run-env:
-    executor: newman/docker-newman-alpine
+    executor: newman/postman-newman-docker
     steps:
       - checkout
-      - newman/collection-run:
+      - newman/newman-run:
+          collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
+          environment: ./newman-orb.postman_environment.json
+  newman-collection-run-env-timeout:
+    executor: newman/postman-newman-docker
+    steps:
+      - checkout
+      - newman/newman-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
           environment: ./newman-orb.postman_environment.json
           timeout: 1000
           insecure: true
 
 workflows:
-  newman-test-workflow:
+  newman-workflow:
     jobs:
       - newman-collection-run
       - newman-collection-run-env
+      - newman-collection-run-env-timeout

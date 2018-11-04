@@ -9,7 +9,7 @@ orbs:
     executors:
       newman-docker:
         docker:
-          - image: postman/newman_alpine33:4.1.0
+          - image: postman/newman:4.2.1
     jobs:
       collection-run:
         executor: newman-docker

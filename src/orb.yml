@@ -1,0 +1,31 @@
+version: 2.1
+
+description: |
+  Newman is a collection runner for Postman.
+  It allows you to effortlessly run and test a Postman collection.
+  It is built with extensibility in mind to easily integrate it with continuous integration servers and build systems.
+
+executors:
+  docker-newman-alpine:
+    docker:
+      - image: postman/newman:4.2.1-alpine
+  docker-newman-ubuntu:
+    docker:
+      - image: postman/newman:4.2.1-ubuntu
+
+commands:
+  collection-run:
+    description: Run a Postman Collection
+    parameters:
+      collection:
+        description: Collection file path or URL
+        type: string
+      options:
+        description: | 
+          Options for newman run like --environment, -n, --timeout, etc
+          Available options are documented at https://github.com/postmanlabs/newman#newman-run-collection-file-source-options
+        type: string
+        default: ""
+    steps:
+      - checkout
+      - run: "newman run <<parameters.collection>> <<parameters.options>>"

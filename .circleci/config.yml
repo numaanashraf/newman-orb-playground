@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  newman: postman/newman@dev:0.0.3
+  newman: postman/newman@0.0.1
 
 jobs:
   newman-collection-run:

@@ -81,10 +81,11 @@ orbs:
             default: ""
           additional-options:
             description: | 
-              Additional options for newman run like --bail, --suppress-exit-code, client certificates, etc
+              Additional options for newman run like --bail, --suppress-exit-code, client certificates and reporters, etc
               References
                 https://github.com/postmanlabs/newman#newman-run-collection-file-source-options
                 https://github.com/postmanlabs/newman#ssl-client-certificates
+                https://github.com/postmanlabs/newman#reporters
             type: string
             default: ""
         steps:
@@ -119,6 +120,8 @@ jobs:
       - newman/collection-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
           environment: ./newman-orb.postman_environment.json
+          timeout: 1000
+          insecure: true
 
 workflows:
   newman-test-workflow:

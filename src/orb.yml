@@ -1,9 +1,7 @@
 version: 2.1
 
 description: |
-  Newman is a collection runner for Postman.
-  It allows you to effortlessly run and test a Postman collection.
-  It is built with extensibility in mind to easily integrate it with continuous integration servers and build systems.
+  Newman is a collection runner for Postman. It allows you to effortlessly run and test a Postman collection.
 
 executors:
   docker-newman-alpine:

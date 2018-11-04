@@ -125,7 +125,7 @@ jobs:
       - newman/newman-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
           environment: ./newman-orb.postman_environment.json
-  newman-collection-run-env-timeout:
+  newman-collection-run-env-timeout-reporters:
     executor: newman/postman-newman-docker
     steps:
       - checkout
@@ -134,10 +134,14 @@ jobs:
           environment: ./newman-orb.postman_environment.json
           timeout: "1000"
           insecure: true
+          additional-options: "--reporters cli,json --reporter-json-export ./newman-report-json.json"
+      - store_artifacts:
+          path: ./newman-report-json.json
+        
 
 workflows:
   newman-workflow:
     jobs:
       - newman-collection-run
       - newman-collection-run-env
-      - newman-collection-run-env-timeout
+      - newman-collection-run-env-timeout-reporters

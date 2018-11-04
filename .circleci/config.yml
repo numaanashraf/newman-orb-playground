@@ -62,16 +62,16 @@ orbs:
             default: ""
           timeout:
             description: Time (in milliseconds) to wait for the entire collection run to complete execution
-            type: integer
-            default: 0
+            type: string
+            default: ""
           timeout-request:
             description: Time (in milliseconds) to wait for requests to return a response
-            type: integer
-            default: 0
+            type: string
+            default: ""
           timeout-script:
             description: Time (in milliseconds) to wait for scripts to complete execution
-            type: integer
-            default: 0
+            type: string
+            default: ""
           insecure:
             description: Disables SSL verification checks and allows self-signed SSL certificates
             type: boolean
@@ -132,7 +132,7 @@ jobs:
       - newman/newman-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
           environment: ./newman-orb.postman_environment.json
-          timeout: 1000
+          timeout: "1000"
           insecure: true
 
 workflows:

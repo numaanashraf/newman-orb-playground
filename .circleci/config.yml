@@ -5,12 +5,27 @@ orbs:
 
 jobs:
   newman-collection-run:
-    executor: newman/postman-newman-docker
+    executor:
+      name: newman/postman-newman-docker
+      tag: 4.4.1
     steps:
       - newman/newman-run:
           collection: https://www.getpostman.com/collections/1d24d0cd53882ad791f3
+
+  newman-collection-run-verbose:
+    executor:
+      name: newman/postman-newman-docker
+      tag: 4.4.1
+    steps:
+      - checkout
+      - newman/newman-run:
+          collection: ./postman-echo.postman_collection.json
+          additional-options: "--verbose"
+
   newman-collection-run-env-timeout:
-    executor: newman/postman-newman-docker
+    executor:
+      name: newman/postman-newman-docker
+      tag: 4.4.1
     steps:
       - checkout
       - newman/newman-run:
@@ -23,4 +38,5 @@ workflows:
   newman-workflow:
     jobs:
       - newman-collection-run
+      - newman-collection-run-verbose
       - newman-collection-run-env-timeout
